@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Clean Blog - Start Bootstrap Theme</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+          rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/posts">Home</a>
+                </li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/home/about">About</a>
+                </li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/home/post">Sample
+                    Post</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/home/write">Write</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/assets/img/contact-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Sports Opinions Wanted!</h1>
+                    <span class="subheading">Your Turn to Pitch in on Sports Conversations.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <p>If you have a topic you want to talk to, you can always write it down.</p>
+                <div class="my-5">
+                    <form id="postForm">
+                        <div class="mb-3">
+                            <label for="postWriter" class="form-label">Post Writer</label>
+                            <input type="text" class="form-control" id="postWriter" name="postWriter">
+                        </div>
+                        <div class="mb-3">
+                            <label for="postPassword" class="form-label">Post Password</label>
+                            <input type="password" class="form-control" id="postPassword" name="postPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="subtitle" class="form-label">Subtitle</label>
+                            <input type="text" class="form-control" id="subtitle" name="subtitle">
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Content</label>
+                            <textarea class="form-control" id="content" name="content" rows="4"></textarea>
+                        </div>
+                        <!-- 이미지 업로드 및 미리보기 -->
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" id="image" name="image" onchange="uploadImage()">
+                        </div>
+                        <img id="imagePreview" style="max-width: 100%; display: none;"/>
+                        <!-- 이미지 주소를 저장할 숨은 input -->
+                        <input type="hidden" id="postImageUrl" name="postImageUrl"/>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Footer-->
+<footer class="border-top">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <ul class="list-inline text-center">
+                    <li class="list-inline-item">
+                        <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    </span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#!">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<script>
+    function submitForm() {
+        var postWriter = document.getElementById('postWriter').value;
+        var postPassword = document.getElementById('postPassword').value;
+        var title = document.getElementById('title').value;
+        var subtitle = document.getElementById('subtitle').value;
+        var content = document.getElementById('content').value;
+        var postImageUrl = document.getElementById('postImageUrl').value;
+
+        // JSON 데이터 생성
+        var jsonData = JSON.stringify({
+            postWriter: postWriter,
+            postPassword: postPassword,
+            title: title,
+            subtitle: subtitle,
+            content: content,
+            postImageUrl: postImageUrl
+        });
+
+        fetch('http://localhost:8080/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                alert('작성 성공');
+                window.location.href = 'http://localhost:8080/posts';
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Error sending data.');
+            });
+    }
+
+
+    function uploadImage() {
+        var input = document.getElementById('image');
+        var formData = new FormData();
+        formData.append('image', input.files[0]);  // 'file' 대신 'image'로 변경
+
+        fetch('http://localhost:8080/api/uploadAjax', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(imageUrl => {
+                // 이미지 미리보기 업데이트
+                var preview = document.getElementById('imagePreview');
+                preview.src = imageUrl;
+                preview.style.display = 'block';
+
+                // postImageUrl에 이미지 주소 저장
+                var postImageUrlInput = document.getElementById('postImageUrl');
+                postImageUrlInput.value = imageUrl;
+                console.log(imageUrl);
+            })
+            .catch(error => {
+                console.error('Error uploading image:', error);
+                alert('Error uploading image.');
+            });
+    }
+
+
+</script>
+</body>
+</html>
