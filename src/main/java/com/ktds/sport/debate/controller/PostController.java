@@ -4,13 +4,16 @@ import com.ktds.sport.debate.common.Id;
 import com.ktds.sport.debate.domain.Comment;
 import com.ktds.sport.debate.domain.Post;
 import com.ktds.sport.debate.dto.CommentRequest;
+import com.ktds.sport.debate.dto.PageResponse;
 import com.ktds.sport.debate.dto.PostDTO;
 import com.ktds.sport.debate.dto.PostDeleteDTO;
+import com.ktds.sport.debate.dto.PostSearchRequest;
 import com.ktds.sport.debate.dto.PostingRequest;
 import com.ktds.sport.debate.service.CommentService;
 import com.ktds.sport.debate.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +45,12 @@ public class PostController {
     }
 
     @GetMapping
-    public String posts(Model model) {
-        List<PostDTO> posts = postService.findAll().stream().map(PostDTO::new).toList();
-        model.addAttribute("posts", posts);
+    public String posts(@ModelAttribute PostSearchRequest postSearchRequest,Model model) {
+        Page<Post> page = postService.search(postSearchRequest);
+        model.addAttribute("posts",page.getContent());
+        PageResponse result = PageResponse.of(page);
+        System.out.println(result);
+        model.addAttribute("result", result);
         return "index";
     }
 

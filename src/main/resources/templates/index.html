@@ -52,6 +52,25 @@
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
+                    <form action="/posts" method="get" id="searchForm">
+                    <div class="input-group">
+                            <input type="hidden" name="page" value = "1">
+                            <div class="input-group-prepend">
+                                <select class="custom-select" name="type">
+                                    <option th:selected="${postSearchRequest.type == null}">-------</option>
+                                    <option value="t" th:selected="${postSearchRequest.type =='t'}" >제목</option>
+                                    <option value="c" th:selected="${postSearchRequest.type =='c'}"  >내용</option>
+                                    <option value="w"  th:selected="${postSearchRequest.type =='w'}" >작성자</option>
+                                    <option value="tc"  th:selected="${postSearchRequest.type =='tc'}" >제목 + 내용</option>
+                                </select>
+                            </div>
+                            <input class="form-control" name="keyword" th:value="${postSearchRequest.keyword}">
+                            <div class="input-group-append" id="button-addon4">
+                                <button class="btn btn-outline-secondary btn-search" type="submit">Search</button>
+                                <button class="btn btn-outline-secondary btn-clear" type="button">Clear</button>
+                            </div>
+                        </div>
+                    </form>
                     <tr th:each="post : ${posts}">
                         <div class="post-preview" th:with="localeObject=${T(java.util.Locale).US}">
                             <a th:href="@{'/posts/' + ${post.seq}}">
@@ -64,10 +83,36 @@
                                 <td th:text=" ${#temporals.format(post.createdAt, 'MMMM dd, yyyy',localeObject)}"></td>
                             </p>
                         </div>
-                        <hr class="my-4" />
                     </tr>
+                    <hr class="my-4" />
                     <!-- Pager-->
-                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <div th:if="${result.prev}">
+                            <a class="btn btn-primary text-uppercase" th:href="@{/posts(page=${result.page-1},type=${postSearchRequest.type},keyword=${postSearchRequest.keyword})}">← Prev</a>
+                        </div>
+                        <div th:if="${result.next}">
+                            <a class="btn btn-primary text-uppercase" th:href="@{/posts(page=${result.page+1},type=${postSearchRequest.type},keyword=${postSearchRequest.keyword})}">Next →</a>
+                        </div>
+                    </div>
+
+
+                    <!-- Pager-->
+<!--                    <ul class="pagination h-100 justify-content-center align-items-center">-->
+
+<!--                        <li class="page-item" th:if="${result.prev}">-->
+<!--                            <a class="page-link" th:href="@{/posts(page=${result.start-1},type=${postSearchRequest.type},keyword=${postSearchRequest.keyword})}" tabindex="-1">Previous</a>-->
+<!--                        </li>-->
+
+<!--                        <li th:class=" 'page-item '+${result.page==page?'active':''} "th:each="page:${result.pageList}">-->
+<!--                            <a class="page-link" th:href="@{/posts(page=${page},type=${postSearchRequest.type},keyword=${postSearchRequest.keyword})}">-->
+<!--                                [[${page}]]-->
+<!--                            </a>-->
+<!--                        </li>-->
+
+<!--                        <li class="page-item" th:if="${result.next}">-->
+<!--                            <a class="page-link" th:href="@{/posts(page=${result.end+1},type=${postSearchRequest.type},keyword=${postSearchRequest.keyword})}">Next</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
                 </div>
             </div>
         </div>
@@ -111,5 +156,17 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="/js/scripts.js"></script>
+        <script th:inline="javascript">
+
+            var searchForm = $('#searchForm');
+            $('.btn-search').click(function (e){
+                searchForm.submit();
+            })
+            $('.btn-clear').click(function (e){
+                searchForm.find('input[name="keyword"]').val('');
+                searchForm.submit();
+            })
+
+        </script>
     </body>
 </html>
