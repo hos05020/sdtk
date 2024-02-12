@@ -3,8 +3,10 @@ package com.ktds.sport.debate.service;
 import com.ktds.sport.debate.common.Id;
 import com.ktds.sport.debate.domain.Post;
 import com.ktds.sport.debate.dto.PostDeleteDTO;
+import com.ktds.sport.debate.dto.PostSearchRequest;
 import com.ktds.sport.debate.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +34,9 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<Post> findAll() {
-        return postRepository.findAll();
+    public Page<Post> search(PostSearchRequest postSearchRequest) {
+        return postRepository.searchAll(postSearchRequest);
+
     }
 
     public void remove(Id<Post, Long> postId, PostDeleteDTO postDeleteDTO) {

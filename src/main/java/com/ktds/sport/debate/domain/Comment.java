@@ -16,7 +16,7 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Comment extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seq;
 
 
