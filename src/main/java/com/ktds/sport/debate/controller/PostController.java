@@ -3,12 +3,7 @@ package com.ktds.sport.debate.controller;
 import com.ktds.sport.debate.common.Id;
 import com.ktds.sport.debate.domain.Comment;
 import com.ktds.sport.debate.domain.Post;
-import com.ktds.sport.debate.dto.CommentRequest;
-import com.ktds.sport.debate.dto.PageResponse;
-import com.ktds.sport.debate.dto.PostDTO;
-import com.ktds.sport.debate.dto.PostDeleteDTO;
-import com.ktds.sport.debate.dto.PostSearchRequest;
-import com.ktds.sport.debate.dto.PostingRequest;
+import com.ktds.sport.debate.dto.*;
 import com.ktds.sport.debate.service.CommentService;
 import com.ktds.sport.debate.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -49,14 +44,15 @@ public class PostController {
         Page<Post> page = postService.search(postSearchRequest);
         model.addAttribute("posts",page.getContent());
         PageResponse result = PageResponse.of(page);
-        System.out.println(result);
+//        System.out.println(result);
         model.addAttribute("result", result);
         return "index";
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, @RequestBody PostDeleteDTO postDeleteDTO) {
-        postService.remove(Id.of(Post.class, id), postDeleteDTO);
+    @PostMapping("/{id}")
+    public String delete(@PathVariable(name = "id") Long id, @RequestBody PostDeleteRequest postDeleteRequest) {
+        postService.remove(Id.of(Post.class, id), postDeleteRequest);
+        return "redirect:/posts";
     }
 
 

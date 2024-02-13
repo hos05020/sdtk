@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Clean Blog - Start Bootstrap Theme</title>
+    <title>Sports Blog</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -17,19 +17,14 @@
           rel="stylesheet" type="text/css"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/css/styles.css" rel="stylesheet"/>
-    <style>
-        .reply-button {
-            font-size: 0.8rem;
-            padding: 0.2rem 0.5rem;
-            margin-top: 0.2rem;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand" href="/posts">Beyond Special</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
@@ -41,7 +36,7 @@
                                         href="http://localhost:8080/posts">Home</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/home/about">About</a>
                 </li>
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/home/post">Sample
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/posts/1">Sample
                     Post</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="http://localhost:8080/home/write">Write</a>
                 </li>
@@ -62,13 +57,14 @@
                                 <a href="#!" th:text="${post.postWriter}">Start Bootstrap</a>
                                 <td th:text="${#temporals.format(post.createdAt, 'MMMM dd, yyyy',localeObject)}"></td>
                             </span>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletePostModal">Delete
+                        Post
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </header>
-<!-- Post Content-->
-<!-- Post Content-->
 <!-- Post Content-->
 <article class="mb-4">
     <div class="container px-4 px-lg-5">
@@ -81,46 +77,50 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <!-- Comment form-->
-                            <form id="commentForm">
+                            <form id="commentForm" class="mb-4">
                                 <div class="mb-3 row">
                                     <div class="col">
                                         <label for="commentWriter" class="form-label">Comment Writer</label>
-                                        <input type="text" class="form-control" id="commentWriter" name="commentWriter" placeholder="Your Name">
+                                        <input type="text" class="form-control" id="commentWriter" name="commentWriter"
+                                               placeholder="Your Name">
                                     </div>
                                     <div class="col">
                                         <label for="commentPassword" class="form-label">Comment Password</label>
-                                        <input type="password" class="form-control" id="commentPassword" name="commentPassword" placeholder="Password">
+                                        <input type="password" class="form-control" id="commentPassword"
+                                               name="commentPassword" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="commentContent" class="form-label">Comment Content</label>
-                                    <textarea class="form-control" id="commentContent" rows="3" name="content" placeholder="Join the discussion and leave a comment!"></textarea>
+                                    <textarea class="form-control" id="commentContent" rows="3" name="content"
+                                              placeholder="Join the discussion and leave a comment!"></textarea>
                                 </div>
-                                <button type="button" class="btn btn-primary" onclick="submitForm()">Submit Comment</button>
+                                <button type="button" class="btn btn-primary" onclick="submitForm()">Submit Comment
+                                </button>
                             </form>
 
                             <!-- Comments loop -->
                             <div id="commentsContainer">
                                 <div th:each="comment : ${comments}" class="d-flex mb-4">
                                     <!-- Parent comment-->
-                                    <div class="ms-3" th:id="'commentContainer_' + ${comment.seq}">
+                                    <div class="flex-shrink-0"><img class="rounded-circle"
+                                                                    src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                                                    alt="..."/></div>
+                                    <div class="ms-3">
                                         <div class="fw-bold" th:text="${comment.commentWriter}"></div>
-                                        <p th:text="${comment.content}"></p>
-                                        <button type="button" class="btn btn-secondary reply-button"
-                                                th:onclick="'showReplyForm(' + ${comment.seq} + ')'" th:id="'replyButton_' + ${comment.seq}">Reply
+                                        [[${comment.content}]]
+                                        <button class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#replyModal" th:data-comment-seq="${comment.seq}"
+                                                th:onclick="'setCommentSeq(' + ${comment.seq} + ')'">Reply
                                         </button>
-                                        <!-- Reply form -->
-                                        <div class="reply-form" th:id="'replyFormContainer_' + ${comment.seq}"></div>
                                         <!-- Nested comments -->
                                         <div th:each="childComment : ${comment.children}" class="d-flex mt-4">
-                                            <div class="ms-3" th:id="'commentContainer_' + ${childComment.seq}">
+                                            <div class="flex-shrink-0"><img class="rounded-circle"
+                                                                            src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                                                            alt="..."/></div>
+                                            <div class="ms-3">
                                                 <div class="fw-bold" th:text="${childComment.commentWriter}"></div>
-                                                <p th:text="${childComment.content}"></p>
-                                                <button type="button" class="btn btn-secondary reply-button"
-                                                        th:onclick="'showReplyForm(' + ${childComment.seq}')" th:id="'replyButton_' + ${childComment.seq}">Reply
-                                                </button>
-                                                <!-- Reply form -->
-                                                <div class="reply-form" th:id="'replyFormContainer_' + ${childComment.seq}"></div>
+                                                [[${childComment.content}]]
                                             </div>
                                         </div>
                                     </div>
@@ -171,6 +171,72 @@
         </div>
     </div>
 </footer>
+<!-- Delete Post Modal -->
+<div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePostModalLabel">Delete Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="deletePostForm">
+                    <div class="mb-3">
+                        <label for="postWriter" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="postWriter" name="postWriter"
+                               placeholder="Your Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="postPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="postPassword" name="postPassword"
+                               placeholder="Password">
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="deletePost()">Delete Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reply Modal -->
+<div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="replyModalLabel">Reply to Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Reply Form -->
+                <form id="replyForm">
+                    <!-- CommentSeq as a hidden input field -->
+                    <input type="hidden" id="commentId" name="commentId"/>
+                    <!-- Comment Writer field -->
+                    <div class="mb-3">
+                        <label for="replyCommentWriter" class="form-label">Comment Writer</label>
+                        <input type="text" class="form-control" id="replyCommentWriter" name="commentWriter"
+                               placeholder="Your Name">
+                    </div>
+                    <!-- Comment Password field -->
+                    <div class="mb-3">
+                        <label for="replyCommentPassword" class="form-label">Comment Password</label>
+                        <input type="password" class="form-control" id="replyCommentPassword" name="commentPassword"
+                               placeholder="Password">
+                    </div>
+                    <!-- Content field -->
+                    <div class="mb-3">
+                        <label for="replyCommentContent" class="form-label">Content</label>
+                        <textarea class="form-control" id="replyCommentContent" name="content" rows="3"
+                                  placeholder="Your Reply"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="submitReplyForm()">Submit Reply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
@@ -205,6 +271,7 @@
                     // 성공 또는 실패 메시지를 서버에서 전달한대로 처리
                     updateComments(data);
                     alert('댓글 작성 성공');
+                    document.getElementById('commentForm').reset();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -214,6 +281,17 @@
             console.error("Error: 'post' or 'post.seq' is undefined.");
             alert('Error sending data.');
         }
+    }
+
+    // 이미지 크기 조절 함수
+    function createProfileImage(src, alt, width, height) {
+        var image = document.createElement('img');
+        image.classList.add('rounded-circle');
+        image.src = src;
+        image.alt = alt;
+        image.style.width = width;
+        image.style.height = height;
+        return image;
     }
 
     function updateComments(comments) {
@@ -229,6 +307,15 @@
             var parentCommentDiv = document.createElement('div');
             parentCommentDiv.classList.add('ms-3');
 
+            // Adding image for the parent comment
+            var parentImageDiv = document.createElement('div');
+            parentImageDiv.classList.add('flex-shrink-0');
+            var parentImage = document.createElement('img');
+            parentImage.classList.add('rounded-circle');
+            parentImage.src = "https://dummyimage.com/50x50/ced4da/6c757d.jpg"; // Your image source here
+            parentImage.alt = "...";
+            parentImageDiv.appendChild(parentImage);
+
             var commentWriterDiv = document.createElement('div');
             commentWriterDiv.classList.add('fw-bold');
             commentWriterDiv.textContent = comment.commentWriter;
@@ -236,17 +323,9 @@
             var contentDiv = document.createElement('div');
             contentDiv.textContent = comment.content;
 
-            // Add "Reply" button for each comment
-            var replyButton = document.createElement('button');
-            replyButton.classList.add('btn', 'btn-secondary', 'reply-button');
-            replyButton.textContent = 'Reply';
-            replyButton.onclick = function () {
-                showReplyForm(comment.seq);
-            };
-
+            parentCommentDiv.appendChild(parentImageDiv);
             parentCommentDiv.appendChild(commentWriterDiv);
             parentCommentDiv.appendChild(contentDiv);
-            parentCommentDiv.appendChild(replyButton);
 
             commentDiv.appendChild(parentCommentDiv);
 
@@ -270,6 +349,96 @@
 
 
 
+
+    function deletePost() {
+        var postWriter = document.getElementById('postWriter').value;
+        var postPassword = document.getElementById('postPassword').value;
+
+        if (!postWriter || !postPassword) {
+            alert('Please enter both your name and password.');
+            return;
+        }
+
+        // Confirm deletion (you can customize this part)
+        if (!confirm('Are you sure you want to delete this post?')) {
+            return;
+        }
+
+        // Check if 'post' and 'post.seq' exist
+        if (post && post.seq) {
+            fetch(`http://localhost:8080/posts/${post.seq}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    postWriter: postWriter,
+                    postPassword: postPassword
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    alert('삭제 성공');
+                    window.location.href = 'http://localhost:8080/posts';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('비밀번호나 아이디를 다시 확인하세요.');
+                });
+        } else {
+            console.error("Error: 'post' or 'post.seq' is undefined.");
+            alert('Error deleting post.');
+        }
+    }
+
+    function setCommentSeq(seq) {
+        document.getElementById('commentId').value = seq;
+    }
+
+    function submitReplyForm() {
+        var commentSeq = document.getElementById('commentId').value;
+
+        var form = document.getElementById('replyForm');
+        var formData = new FormData(form);
+
+        // Add commentSeq to formData
+        formData.append('commentId', commentSeq);
+
+        var jsonObject = {};
+        formData.forEach(function (value, key) {
+            jsonObject[key] = value;
+        });
+
+        var jsonData = JSON.stringify(jsonObject);
+
+        // Check if 'post' and 'commentSeq' exist
+        if (post && post.seq && commentSeq) {
+            fetch(`http://localhost:8080/posts/${post.seq}/comments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // 성공 또는 실패 메시지를 서버에서 전달한대로 처리
+                    updateComments(data);
+                    alert('댓글 작성 성공');
+                    $('#replyModal').modal('hide'); // 모달 닫기
+                    document.getElementById('replyForm').reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error sending data.');
+                });
+        } else {
+            console.error("Error: 'post' or 'commentSeq' is undefined.");
+            alert('Error sending data.');
+        }
+    }
 </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package com.ktds.sport.debate.domain;
 
 import com.ktds.sport.debate.common.BaseEntity;
-import com.ktds.sport.debate.dto.PostDeleteDTO;
+import com.ktds.sport.debate.dto.PostDeleteRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -53,8 +53,8 @@ public class Post extends BaseEntity {
         this.postImageUrl = postImageUrl;
     }
 
-    public boolean check(PostDeleteDTO postDeleteDTO) {
-        return this.postWriter.equals(postDeleteDTO.getPostWriter()) && this.postPassword.equals(postDeleteDTO.getPostPassword());
+    public boolean check(PostDeleteRequest postDeleteRequest) {
+        return this.postWriter.equals(postDeleteRequest.getPostWriter()) && this.postPassword.equals(postDeleteRequest.getPostPassword());
     }
 
     public void updateImageUrl(String postImageUrl) {

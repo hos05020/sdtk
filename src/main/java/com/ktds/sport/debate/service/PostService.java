@@ -2,7 +2,7 @@ package com.ktds.sport.debate.service;
 
 import com.ktds.sport.debate.common.Id;
 import com.ktds.sport.debate.domain.Post;
-import com.ktds.sport.debate.dto.PostDeleteDTO;
+import com.ktds.sport.debate.dto.PostDeleteRequest;
 import com.ktds.sport.debate.dto.PostSearchRequest;
 import com.ktds.sport.debate.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -39,9 +38,9 @@ public class PostService {
 
     }
 
-    public void remove(Id<Post, Long> postId, PostDeleteDTO postDeleteDTO) {
+    public void remove(Id<Post, Long> postId, PostDeleteRequest postDeleteRequest) {
         Post post = findById(postId).orElseThrow(RuntimeException::new);
-        if (post.check(postDeleteDTO)){
+        if (post.check(postDeleteRequest)){
             postRepository.delete(post);
         } else throw new RuntimeException();
     }
